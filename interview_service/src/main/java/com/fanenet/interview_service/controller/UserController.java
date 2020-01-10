@@ -8,11 +8,11 @@ import com.fanenet.interview_service.util.EncryptUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
+import java.util.Calendar;
+import java.util.Optional;
 
 /**
  * @version: V1.0
@@ -44,6 +44,66 @@ public class UserController {
         }else{
             CommonUtil.setMsgObject(json, 201, "user login failure",null,0);
         }
+        return json;
+    }
+
+    /**
+     * 查询所有账号
+     *
+     * @return JSONObject 返回值
+     */
+    @GetMapping(path="/getalluser")
+    @ResponseBody
+    public JSONObject getAllMemberInfo() {
+        JSONObject json = new JSONObject();
+        Iterable<UserInfo> obj = userInfoRepository.findAll();
+        if(null != obj){
+            long size = obj.spliterator().getExactSizeIfKnown();
+            CommonUtil.setMsgObject(json, 0, "get all user success",obj,size);
+        }else{
+            CommonUtil.setMsgObject(json, 1, "get all user failure",null,0);
+        }
+        return json;
+    }
+
+    /**
+     * 保存账号
+     *
+     * @return JSONObject 返回值
+     */
+    @PostMapping(path="/saveuser")
+    @ResponseBody
+    public JSONObject AddUser(@RequestParam("id") int id, @RequestParam("userName") String userName, @RequestParam("passWord") String passWord, @RequestParam("state") String state) {
+        JSONObject json = new JSONObject();
+        Optional userInfoOptional = userInfoRepository.findById(id);
+        UserInfo userInfo = null;
+        if(null != userInfoOptional){
+            userInfo = new UserInfo();
+            userInfo.setCreateTime(Calendar.getInstance().getTime());
+        }
+        userInfo.setUserName(userName);
+        userInfo.setPassWord(EncryptUtil.getInstance().MD5(passWord));
+        userInfo.setState(state);
+        UserInfo obj = userInfoRepository.save(userInfo);
+        if(null != obj){
+            CommonUtil.setMsgObject(json, 200, "save user success",obj,0);
+        }else{
+            CommonUtil.setMsgObject(json, 201, "save user failure",null,0);
+        }
+        return json;
+    }
+
+    /**
+     * 删除账号
+     *
+     * @return JSONObject 返回值
+     */
+    @PostMapping(path="/deleteuser")
+    @ResponseBody
+    public JSONObject DeleteUser(@RequestParam("id") int id) {
+        JSONObject json = new JSONObject();
+        userInfoRepository.deleteById(id);
+        CommonUtil.setMsgObject(json, 200, "delete user success",id,0);
         return json;
     }
 }

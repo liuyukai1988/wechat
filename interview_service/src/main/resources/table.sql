@@ -14,8 +14,8 @@ CREATE TABLE `answer_question` (
 ) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
 
 --账号表
-CREATE TABLE `questions`.`user` (
-  `ID` INT NOT NULL,
+CREATE TABLE `user` (
+  `ID` INT NOT NULL AUTO_INCREMENT,
   `UserName` VARCHAR(45) NULL,
   `PassWord` VARCHAR(45) NULL,
   `State` int(2) DEFAULT 0,

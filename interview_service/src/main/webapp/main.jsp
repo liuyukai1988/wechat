@@ -62,8 +62,10 @@
                         <dd><a href="member.jsp" target="main_iframe">会员列表</a></dd>
                     </dl>
                 </li>
-                <!--<li class="layui-nav-item"><a href="">云市场</a></li>
-                <li class="layui-nav-item"><a href="">发布商品</a></li>-->
+                <li class="layui-nav-item">
+                    <a href="user.jsp" class="layui-icon layui-icon-user" target="main_iframe">&nbsp;&nbsp;账号管理</a>
+                </li>
+                <!--<li class="layui-nav-item"><a href="">发布商品</a></li>-->
             </ul>
         </div>
     </div>
