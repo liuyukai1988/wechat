@@ -56,7 +56,7 @@ public class MemberController {
      */
     @PostMapping(path="/deletemember")
     @ResponseBody
-    public JSONObject DeleteTopic(@RequestParam("id") int id) {
+    public JSONObject DeleteMember(@RequestParam("id") int id) {
         JSONObject json = new JSONObject();
         memberInfoRepository.deleteById(id);
         CommonUtil.setMsgObject(json, 200, "delete member success",id,0);
@@ -72,8 +72,7 @@ public class MemberController {
     @ResponseBody
     public JSONObject AddMember(@RequestParam("openId") String openId, @RequestParam("nickName") String nickName, @RequestParam("avatarUrl") String avatarUrl, @RequestParam("gender") int gender, @RequestParam("country") String country, @RequestParam("province") String province, @RequestParam("city") String city, @RequestParam("language") String language, @RequestParam("cTime") String cTime, @RequestParam("mobile") String mobile) {
         JSONObject json = new JSONObject();
-        MemberInfo memberInfo = null;
-        MemberInfo memberInfoBean = memberInfoRepository.findByOpenId(openId);
+        MemberInfo memberInfo = memberInfoRepository.findByOpenId(openId);
         if(null == memberInfo){
             memberInfo = new MemberInfo();
             memberInfo.setCreateTime(Calendar.getInstance().getTime());
@@ -86,11 +85,13 @@ public class MemberController {
         memberInfo.setCountry(country);
         memberInfo.setCity(city);
         memberInfo.setLanguage(language);
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");// 指定格式
-        try {
-            memberInfo.setcTime(simpleDateFormat.parse(cTime));
-        } catch (ParseException e) {
-            logger.error("simpleDateFormat ParseException",e);
+        if(!"undefined".equals(cTime) && !"".equals(cTime)){
+            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");// 指定格式
+            try {
+                memberInfo.setcTime(simpleDateFormat.parse(cTime));
+            } catch (ParseException e) {
+                logger.error("simpleDateFormat ParseException",e);
+            }
         }
         memberInfo.setMobile(mobile);
         MemberInfo obj = memberInfoRepository.save(memberInfo);

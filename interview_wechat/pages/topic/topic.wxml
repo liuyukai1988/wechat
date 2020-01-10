@@ -21,8 +21,8 @@
         <view wx:for='{{list}}' wx:key='index' class="weui-media-box weui-media-box_text">
           <view class="weui-media-box__title weui-media-box__title_in-text">{{item.title}}</view>
           <view class="weui-media-box__info">{{item.answer1}}</view>
-          <!-- 分割线 -->
-          <view class="divLine"></view>
+          <!-- 分割线-->
+          <view class="divLine"></view> 
         </view>
       </view>
     </view>
